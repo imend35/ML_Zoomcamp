@@ -67,25 +67,31 @@ The verified multiple-choice answer is **`1.837`**, supported by the validation 
 
 ## Question 3 — Random Forest Hyperparameter Tuning
 
-**Answer: `n_estimators = 150`**
+**Answer: `n_estimators = 100`**
 
-Four random forest models were evaluated using
-different numbers of trees.
+Four Random Forest models were evaluated using different numbers of estimators with `random_state=1`.
 
-| n_estimators | Validation RMSE |
-| -----------: | --------------: |
-|           10 |        1.833220 |
-|           50 |        1.773988 |
-|          100 |        1.769786 |
-|          150 |        1.769198 |
+### Validation Results
 
-The random forest with 150 trees achieved the
-lowest validation RMSE of 1.769 (rounded to
-three decimal places).
+The following results were reproduced using scikit-learn 1.6.1.
 
-Increasing the number of trees improved
-validation performance, although the gains
-became smaller beyond 50 trees.
+| n_estimators | Validation RMSE | RMSE (3 decimals) |
+| -----------: | --------------: | ----------------: |
+|           10 |        1.837054 |             1.837 |
+|           50 |        1.771567 |             1.772 |
+|      **100** |    **1.768136** |         **1.768** |
+|          150 |        1.768804 |             1.769 |
+
+### Key Findings
+
+- Increasing the number of trees from 10 to 100 improved validation performance.
+- The lowest validation RMSE was achieved with 100 trees.
+- Increasing the number of trees from 100 to 150 did not improve validation performance.
+- A comparison with scikit-learn 1.9.0 produced a different ranking, demonstrating the importance of recording dependency versions for reproducible experiments.
+
+### Conclusion
+
+The best value is **`n_estimators = 100`**, achieving a validation RMSE of **1.768136**.
 
 ## Question 4 — Random Forest Maximum Depth Optimization
 
