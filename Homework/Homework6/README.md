@@ -130,3 +130,87 @@ For each maximum depth, the validation RMSE was calculated for four different nu
 The best maximum tree depth was **`max_depth = 10`**, achieving a mean validation RMSE of **1.754392 MPG** across the four evaluated forest sizes.
 
 This configuration provided the best average validation performance among the tested depth values.
+
+## Question 5 — Random Forest Feature Importance
+
+**Answer: `vehicle_weight`**
+
+### Objective
+
+Identify the most important feature among the four candidate variables using a trained Random Forest Regressor.
+
+### Model Configuration
+
+| Parameter    | Value                 |
+| ------------ | --------------------- |
+| Algorithm    | RandomForestRegressor |
+| n_estimators | 10                    |
+| max_depth    | 20                    |
+| random_state | 1                     |
+| n_jobs       | -1                    |
+
+### Feature Importance Results
+
+The model's `feature_importances_` attribute was used to calculate feature importance scores.
+
+| Candidate Feature   | Importance Score |
+| ------------------- | ---------------: |
+| **vehicle_weight**  |     **0.203313** |
+| horsepower          |         0.078271 |
+| engine_displacement |         0.061281 |
+| acceleration        |         0.054998 |
+
+### Key Findings
+
+- `vehicle_weight` achieved the highest importance score among the four candidate features.
+- `horsepower` ranked second, followed by `engine_displacement` and `acceleration`.
+- Across all 16 encoded features, `model_year` had the highest overall importance score (0.296107).
+- Feature importance scores describe the relative contribution of features to impurity reduction within the trained forest; they do not establish causation.
+
+### Conclusion
+
+The correct answer is **`vehicle_weight`**, with a feature importance score of **0.203313**.
+
+The complete feature importance results are available in `question5_feature_importance.csv`.
+
+## Question 6 — XGBoost Learning Rate Comparison
+
+**Answer: `eta = 0.1`**
+
+### Objective
+
+Compare two XGBoost regression models using different learning rates to identify the configuration that achieves the lowest validation RMSE.
+
+### Model Configuration
+
+Both models were trained using the same hyperparameters, except for the learning rate (`eta`).
+
+| Parameter        | Model A          | Model B          |
+| ---------------- | ---------------- | ---------------- |
+| eta              | 0.3              | 0.1              |
+| max_depth        | 6                | 6                |
+| min_child_weight | 1                | 1                |
+| objective        | reg:squarederror | reg:squarederror |
+| nthread          | 8                | 8                |
+| seed             | 1                | 1                |
+| num_boost_round  | 100              | 100              |
+
+### Evaluation Results
+
+| Learning Rate | Training RMSE | Validation RMSE |
+| ------------- | ------------: | --------------: |
+| 0.3           |      0.901056 |        1.826458 |
+| **0.1**       |  **1.311918** |    **1.724810** |
+
+### Key Findings
+
+- The model with `eta=0.1` achieved the lowest validation RMSE of **1.724810**.
+- The model with `eta=0.3` achieved a lower training RMSE but a higher validation RMSE.
+- Reducing the learning rate from 0.3 to 0.1 improved validation RMSE by approximately **5.57%**.
+- The results suggest that a smaller learning rate provided better generalization for this dataset under the tested configuration.
+
+### Conclusion
+
+The best learning rate was **`eta = 0.1`**, achieving a validation RMSE of **1.724810 MPG** after 100 boosting rounds.
+
+The complete comparison is available in `question6_results.csv`.
