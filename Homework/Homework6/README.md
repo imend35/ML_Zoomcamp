@@ -18,15 +18,13 @@ The result confirms that `model_year` is the first splitting feature of the trai
 
 ## Question 2 — Random Forest Regressor
 
-**Answer: `1.837` (closest provided option)**
+**Answer: `1.837`**
 
 ### Objective
 
-Train a Random Forest Regressor to predict vehicle fuel efficiency (`fuel_efficiency_mpg`) and evaluate its performance on the validation dataset using Root Mean Squared Error (RMSE).
+Train a Random Forest Regressor to predict vehicle fuel efficiency (`fuel_efficiency_mpg`) and evaluate its performance using Root Mean Squared Error (RMSE) on the validation dataset.
 
 ### Model Configuration
-
-The model was trained using the following hyperparameters:
 
 | Parameter          | Value                 |
 | ------------------ | --------------------- |
@@ -38,33 +36,34 @@ The model was trained using the following hyperparameters:
 | Validation samples | 2,000                 |
 | Evaluation metric  | RMSE                  |
 
-### Model Evaluation
+### Evaluation Results
 
-After training the Random Forest Regressor, predictions were generated on the validation dataset.
+The same dataset and model configuration were evaluated in two Python environments.
 
-**Validation Results:**
+| scikit-learn Version | Validation RMSE |
+| -------------------- | --------------: |
+| 1.9.0                |        1.833220 |
+| **1.6.1**            |    **1.837054** |
 
-| Metric                             |    Value |
-| ---------------------------------- | -------: |
-| Validation RMSE                    | 1.833220 |
-| Validation RMSE (4 decimal places) |   1.8332 |
-| Closest provided answer            |    1.837 |
+### Reproducibility Investigation
 
-### Key Findings
+The initial experiment using scikit-learn 1.9.0 produced a validation RMSE of 1.833220, which did not exactly match the provided answer options.
 
-- The Random Forest Regressor was successfully trained using 10 decision trees.
-- The model achieved a validation RMSE of **1.833220 MPG**.
-- RMSE measures the typical magnitude of prediction errors, with larger errors receiving greater weight.
-- Lower RMSE values indicate better predictive performance.
-- Among the provided multiple-choice options, **1.837** is the closest to the calculated result.
+To investigate the discrepancy:
+
+1. The local dataset was compared with the official 2026 dataset.
+2. Both datasets were confirmed to contain identical values.
+3. The preprocessing steps and Random Forest parameters were checked against the official assignment.
+4. An isolated Python environment was created with scikit-learn 1.6.1.
+5. The model was retrained using the same dataset and configuration.
+
+The second experiment produced a validation RMSE of **1.837054**, matching the provided answer **1.837** when rounded to three decimal places.
+
+The results demonstrate that dependency versions can affect numerical reproducibility. Because other dependencies also differed between environments, the observed difference cannot yet be attributed exclusively to scikit-learn.
 
 ### Conclusion
 
-The Random Forest Regressor achieved a validation RMSE of **1.833220 MPG** using 10 estimators.
-
-The closest available answer is **1.837**. However, the calculated value does not exactly match the provided option, so the discrepancy should be verified before final homework submission.
-
-This model serves as the baseline for subsequent hyperparameter tuning experiments.
+The verified multiple-choice answer is **`1.837`**, supported by the validation RMSE of **1.837054** obtained in the scikit-learn 1.6.1 environment.
 
 ## Question 3 — Random Forest Hyperparameter Tuning
 
