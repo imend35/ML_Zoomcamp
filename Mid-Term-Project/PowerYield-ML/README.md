@@ -211,9 +211,7 @@ Tests cover:
 
 Python, Pandas, NumPy, Scikit-learn, XGBoost, FastAPI, Pydantic, Pytest, Docker, Jupyter Notebook.
 
-## 12. Cloud Deployment 
-
-## Live Cloud Deployment
+## 12. Live Cloud Deployment
 
 PowerYield ML is deployed on Render using Docker.
 
@@ -250,6 +248,68 @@ Response:
 The API successfully returned HTTP 200 during live deployment testing.
 
 **Note:** The free Render instance may spin down after inactivity, so the first request can take longer to complete.
+
+## Interactive Web Application
+
+PowerYield ML includes an interactive, responsive web interface that allows users to predict the net electrical power output of a Combined Cycle Power Plant using a trained XGBoost regression model.
+
+### Live Demo
+
+**Web Application:** https://poweryield-ml-api.onrender.com/
+
+**Swagger API Documentation:** https://poweryield-ml-api.onrender.com/docs
+
+**Health Check:** https://poweryield-ml-api.onrender.com/health
+
+### How to Use
+
+1. Open the live web application.
+2. Enter the four operating parameters:
+   - **AT:** Ambient Temperature (°C)
+   - **V:** Exhaust Vacuum (cm Hg)
+   - **AP:** Ambient Pressure (mbar)
+   - **RH:** Relative Humidity (%)
+3. Click **Predict Power Output**.
+4. View the predicted electrical power output in megawatts (MW).
+
+### Example Prediction
+
+| Feature                    |           Value |
+| -------------------------- | --------------: |
+| AT                         |           25.18 |
+| V                          |           62.96 |
+| AP                         |         1020.04 |
+| RH                         |           59.08 |
+| **Predicted Power Output** | **444.9519 MW** |
+
+### Application Architecture
+
+The application integrates:
+
+- **Frontend:** HTML, CSS, and JavaScript
+- **Backend:** FastAPI
+- **Machine Learning:** XGBoost Regression
+- **Containerization:** Docker
+- **Continuous Integration:** GitHub Actions
+- **Cloud Deployment:** Render
+
+The frontend sends user inputs to the `/predict` API endpoint and displays the model's prediction without requiring users to interact directly with the API.
+
+### Model Performance
+
+The final model achieved the following performance on the held-out test dataset:
+
+| Metric |     Value |
+| ------ | --------: |
+| MAE    | 2.2678 MW |
+| RMSE   | 3.2514 MW |
+| R²     |    0.9640 |
+
+### Deployment Notes
+
+The application is deployed using Render's free service tier. After periods of inactivity, the service may take additional time to respond while the instance starts.
+
+The application is intended for educational and demonstration purposes.
 
 ## 13. Author
 
