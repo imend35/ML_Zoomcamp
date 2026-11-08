@@ -211,7 +211,47 @@ Tests cover:
 
 Python, Pandas, NumPy, Scikit-learn, XGBoost, FastAPI, Pydantic, Pytest, Docker, Jupyter Notebook.
 
-## 12. Author
+## 12. Cloud Deployment 
+
+## Live Cloud Deployment
+
+PowerYield ML is deployed on Render using Docker.
+
+- **Platform:** Render
+- **Runtime:** Docker / Python 3.11
+- **Model:** Tuned XGBoost Regressor
+- **API Framework:** FastAPI
+- **Live API:** https://poweryield-ml-api.onrender.com
+- **Interactive API Documentation:** https://poweryield-ml-api.onrender.com/docs
+- **Health Check:** https://poweryield-ml-api.onrender.com/health
+
+### Example Prediction
+
+Request:
+
+```json
+{
+  "AT": 25.18,
+  "V": 62.96,
+  "AP": 1020.04,
+  "RH": 59.08
+}
+```
+
+Response:
+
+```json
+{
+  "predicted_power_output_mw": 444.9519,
+  "unit": "MW"
+}
+```
+
+The API successfully returned HTTP 200 during live deployment testing.
+
+**Note:** The free Render instance may spin down after inactivity, so the first request can take longer to complete.
+
+## 13. Author
 
 **Esila Nur Demirci**
 
