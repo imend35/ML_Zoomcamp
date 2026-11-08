@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PowerYield ML | Power Plant Prediction</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --card: #172337;
+        --border: #314259;
+        --text: #edf5ff;
+        --muted: #a8bad0;
+        --accent: #36dfcc;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #1a3550, var(--bg) 65%);
+        color: var(--text);
+        font-family: Inter, Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 16px;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 760px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .logo {
+        font-size: 42px;
+        margin-bottom: 12px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(32px, 5vw, 48px);
+        letter-spacing: -1px;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        margin-top: 12px;
+        line-height: 1.6;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 30px;
+        box-shadow: 0 20px 60px #0005;
+      }
+
+      .card h2 {
+        margin-top: 0;
+        font-size: 20px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+        margin: 25px 0;
+      }
+
+      label {
+        display: block;
+        color: var(--muted);
+        font-size: 14px;
+        margin-bottom: 9px;
+      }
+
+      input {
+        width: 100%;
+        padding: 15px;
+        background: #0d182a;
+        border: 1px solid #41536c;
+        border-radius: 10px;
+        color: white;
+        font-size: 17px;
+        outline: none;
+      }
+
+      input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px #36dfcc20;
+      }
+
+      button {
+        width: 100%;
+        padding: 17px;
+        border: 0;
+        border-radius: 12px;
+        background: linear-gradient(90deg, #26c9d4, #40e8b5);
+        color: #08202c;
+        font-weight: 800;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        filter: brightness(1.08);
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+
+      .result {
+        margin-top: 24px;
+        padding: 24px;
+        border-radius: 15px;
+        background: #0c2c36;
+        border: 1px solid #287d83;
+        text-align: center;
+      }
+
+      .result small {
+        color: #a8e4e0;
+        font-size: 13px;
+      }
+
+      .prediction {
+        font-size: clamp(34px, 7vw, 54px);
+        font-weight: 800;
+        color: var(--accent);
+        margin-top: 10px;
+      }
+
+      .error {
+        color: #ffb8b8;
+        margin-top: 18px;
+        text-align: center;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      footer {
+        text-align: center;
+        color: var(--muted);
+        margin-top: 25px;
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      footer a {
+        color: var(--accent);
+      }
+
+      @media (max-width: 560px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .card {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="container">
+      <header class="header">
+        <div class="logo">⚡</div>
+        <h1>PowerYield ML</h1>
+        <p class="subtitle">
+          AI-Powered Power Plant Output Prediction
+          <br />
+          Predict electrical power generation using XGBoost.
+        </p>
+      </header>
+
+      <section class="card">
+        <h2>Power Plant Operating Conditions</h2>
+
+        <form id="predictionForm">
+          <div class="grid">
+            <div>
+              <label for="at">Ambient Temperature (°C)</label>
+              <input
+                id="at"
+                type="number"
+                step="any"
+                min="0"
+                max="50"
+                value="25.18"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="v">Exhaust Vacuum (cm Hg)</label>
+              <input
+                id="v"
+                type="number"
+                step="any"
+                min="0"
+                max="100"
+                value="62.96"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="ap">Ambient Pressure (mbar)</label>
+              <input
+                id="ap"
+                type="number"
+                step="any"
+                min="900"
+                max="1100"
+                value="1020.04"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="rh">Relative Humidity (%)</label>
+              <input
+                id="rh"
+                type="number"
+                step="any"
+                min="0"
+                max="100"
+                value="59.08"
+                required
+              />
+            </div>
+          </div>
+
+          <button id="predictButton" type="submit">
+            ⚡ Predict Power Output
+          </button>
+        </form>
+
+        <div id="result" class="result hidden" role="status" aria-live="polite">
+          <small>Predicted Electrical Power Output</small>
+          <div class="prediction"><span id="predictionValue"></span> MW</div>
+          <small>Prediction generated by the XGBoost model</small>
+        </div>
+
+        <div id="error" class="error hidden" role="alert"></div>
+      </section>
+
+      <footer>
+        Powered by FastAPI · XGBoost · Docker · Render
+        <br />
+        Developed by Esila Nur Demirci
+        <br />
+        <a href="/docs" target="_blank" rel="noopener"> API Documentation </a>
+      </footer>
+    </main>
+
+    <script>
+      const form = document.getElementById("predictionForm");
+      const button = document.getElementById("predictButton");
+      const result = document.getElementById("result");
+      const error = document.getElementById("error");
+      const predictionValue = document.getElementById("predictionValue");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        result.classList.add("hidden");
+        error.classList.add("hidden");
+        button.disabled = true;
+        button.textContent = "Predicting...";
+
+        const payload = {
+          AT: Number(document.getElementById("at").value),
+          V: Number(document.getElementById("v").value),
+          AP: Number(document.getElementById("ap").value),
+          RH: Number(document.getElementById("rh").value),
+        };
+
+        try {
+          const response = await fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            throw new Error(
+              `Prediction request failed: HTTP ${response.status}`,
+            );
+          }
+
+          const data = await response.json();
+
+          predictionValue.textContent = Number(
+            data.predicted_power_output_mw,
+          ).toFixed(4);
+
+          result.classList.remove("hidden");
+        } catch (err) {
+          error.textContent = "Unable to generate prediction. " + err.message;
+          error.classList.remove("hidden");
+        } finally {
+          button.disabled = false;
+          button.textContent = "⚡ Predict Power Output";
+        }
+      });
+    </script>
+  </body>
+</html>

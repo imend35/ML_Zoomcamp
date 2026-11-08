@@ -1,6 +1,6 @@
 
 from pathlib import Path
-
+from fastapi.responses import FileResponse
 import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
@@ -26,13 +26,12 @@ class PowerPlantInput(BaseModel):
     RH: float = Field(..., ge=0, le=100)
 
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 def root():
-    return {
-        "project": "PowerYield ML",
-        "status": "running",
-        "model": "XGBoost"
-    }
+    return FileResponse(
+        BASE_DIR / "templates" / "index.html",
+        media_type="text/html"
+    )
 
 
 @app.get("/health")

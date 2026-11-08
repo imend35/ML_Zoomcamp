@@ -11,6 +11,7 @@ COPY requirements-prod.txt .
 RUN pip install --no-cache-dir -r requirements-prod.txt
 
 COPY predict.py .
+COPY templates/ templates/
 COPY models/poweryield_model.json models/poweryield_model.json
 
 EXPOSE 9696
