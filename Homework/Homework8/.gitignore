@@ -1,0 +1,19 @@
+
+# Python virtual environment
+.venv/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+
+# Dataset and downloaded archives
+data/
+data.zip
+
+# Local environment and editor files
+.env
+.vscode/
+
+# Temporary files
+*.log
+.DS_Store
